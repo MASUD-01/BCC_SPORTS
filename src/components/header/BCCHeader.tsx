@@ -19,7 +19,7 @@ const BCCHeader = () => {
 
   return (
     <header className='flex justify-center py-4 w-full'>
-      <div className='bg-white clip-div  h-20 md:h-24 w-full rounded-[10px] shadow-[inset_2px_2px_0px_0px_rgba(113,133,2,0.25)] border border-neutral-200 flex items-center justify-between px-6 md:px-10'>
+      <div className='bg-white clip-div  h-20 md:h-20 w-full rounded-[10px] shadow-[inset_2px_2px_0px_0px_rgba(113,133,2,0.25)] border border-neutral-200 flex items-center justify-between px-6 md:px-10'>
         <nav className='hidden md:flex items-center justify-between w-full gap-8'>
           {navLinks.map((link, index) =>
             link.type === 'image' ? (
