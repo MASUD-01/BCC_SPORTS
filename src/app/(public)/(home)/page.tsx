@@ -48,7 +48,7 @@ export default function Home() {
         style={{ backgroundImage: "url('/bccImages/bg.jpg')" }}
         className='relative w-full bg-cover bg-center h-[800px]'
       >
-        <div className='relative z-20 container'>
+        <div className='relative z-20'>
           <BCCHeader />
         </div>
         {/* Overlay */}
