@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { ApiLoginResponse } from './type/auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -23,10 +22,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           body: JSON.stringify({ user_or_email, password }),
         });
 
-        console.log(res, '88888888888866666666666666666666666');
         if (!res.ok) return null;
 
-        const userInfo: ApiLoginResponse = await res.json();
+        const userInfo: any = await res.json();
         if (!userInfo?.success || !userInfo?.data) {
           return null;
         }

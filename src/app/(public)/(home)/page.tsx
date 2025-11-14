@@ -1,4 +1,4 @@
-import BCCHeader from '@/components/header/BCCHeader';
+import BCCHeader from '@/app/(public)/(home)/_component/BCCHeader';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import AnnounceBoard from './_component/AnnounceBoard';

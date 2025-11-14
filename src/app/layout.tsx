@@ -1,8 +1,6 @@
 import CustomProvider from '@/components/custom-provider';
 import Footer from '@/components/footer/footer';
-import Header from '@/components/header/header';
 import HeaderLoading from '@/components/header/header-loading';
-import Popup from '@/components/popup/popup';
 import { Toaster } from '@/components/ui/sonner';
 import { SessionProvider } from 'next-auth/react';
 import { Geist, Geist_Mono, Lato, Plus_Jakarta_Sans, Roboto } from 'next/font/google';
@@ -89,9 +87,7 @@ export default async function RootLayout({
         <SessionProvider>
           <CustomProvider>
             <Suspense fallback={<HeaderLoading />}>{/* <Header /> */}</Suspense>
-            <Suspense fallback={''}>
-              <Popup />
-            </Suspense>
+            <Suspense fallback={''}>{/* <Popup /> */}</Suspense>
             <div className='min-h-screen'>{children}</div>
             <Toaster />
             <Footer />

@@ -18,12 +18,15 @@ const baseQuery: BaseQueryFn<string | EnhancedFetchArgs, unknown, FetchBaseQuery
   fetchBaseQuery({
     baseUrl: baseURL,
     credentials: 'include',
+
     prepareHeaders: async (headers, { getState: _state }) => {
       const session = await getSession();
-      const token = session?.user?.token;
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
+      // const token = session?.user?.token;
+      // if (token) {
+      //   headers.set('authorization', `Bearer ${token}`);
+      // }
+
+      headers.set('Accept', 'application/json');
     },
   });
 

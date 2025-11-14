@@ -1,12 +1,19 @@
 'use client';
 
 import { FormInput, FormSelectInput } from '@/components/form-items';
-import BCCHeader from '@/components/header/BCCHeader';
+import BCCHeader from '@/app/(public)/(home)/_component/BCCHeader';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import z from 'zod';
 import { TbCloudUpload } from 'react-icons/tb';
+import CongratulationRegistration from '../../(home)/_component/CongratulationRegistration';
+import {
+  useCreateRegistrationMutation,
+  useGetRolesQuery,
+  useGetTeamsQuery,
+  useGetTournamentQuery,
+} from '@/lib/APIs/common-api';
 const registerSchema = z.object({
   name: z.string().nonempty({ message: 'Name is required' }),
   role: z.string().nonempty({ message: 'Role is required' }),
@@ -14,7 +21,7 @@ const registerSchema = z.object({
   location: z.string().nonempty({ message: 'Location is required' }),
   team: z.string().nonempty({ message: 'Team is required' }),
   transaction_id: z.string().nonempty({ message: 'Transaction ID is required' }),
-  picture: z.instanceof(File, { message: 'Picture is required' }),
+  image: z.instanceof(File, { message: 'image is required' }),
 });
 
 export type IRegisterSchema = z.infer<typeof registerSchema>;
@@ -22,6 +29,11 @@ export type IRegisterSchema = z.infer<typeof registerSchema>;
 // Inside your Register component
 
 const Register = () => {
+  const { data } = useGetRolesQuery();
+  const { data: touranment } = useGetTournamentQuery();
+  const { data: teams } = useGetTeamsQuery();
+  console.log(data, '--------------');
+  const [createRegistration] = useCreateRegistrationMutation();
   const methods = useForm<IRegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -31,12 +43,27 @@ const Register = () => {
       location: '',
       team: 'Bangladesh',
       transaction_id: '',
-      picture: undefined,
+      image: undefined,
     },
   });
   const onSubmit = (data: IRegisterSchema) => {
     console.log('Form Data:', data);
+
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('role', data.role);
+    formData.append('phone_number', data.phone_number);
+    formData.append('location', data.location);
+    formData.append('team', data.team);
+    formData.append('transaction_id', data.transaction_id);
+
+    if (data.image) {
+      formData.append('image', data.image); // file input
+    }
+
+    createRegistration(formData);
   };
+
   return (
     <div className=''>
       <BCCHeader />
@@ -77,13 +104,7 @@ const Register = () => {
                     name='role'
                     label='Select your role*'
                     placeholder='Select role'
-                    options={[
-                      { label: 'All rounder', value: 'All rounder' },
-                      { label: 'Batsman', value: 'Batsman' },
-                      { label: 'Bowler', value: 'Bowler' },
-                      { label: 'Wicket Keeper', value: 'Wicket Keeper' },
-                      { label: 'Fielder', value: 'Fielder' },
-                    ]}
+                    options={data?.map((item) => ({ label: item.name, value: item.name })) || []}
                   />
 
                   {/* Phone */}
@@ -93,11 +114,13 @@ const Register = () => {
                     placeholder='01XXXXXXXXX'
                   />
 
-                  {/* Location */}
-                  <FormInput<IRegisterSchema>
-                    name='location'
-                    label='Type your location*'
-                    placeholder='Village'
+                  <FormSelectInput<IRegisterSchema>
+                    name='role'
+                    label='Select your Tournament*'
+                    placeholder='Select Tournament'
+                    options={
+                      touranment?.map((item) => ({ label: item.name, value: item.name })) || []
+                    }
                   />
 
                   {/* Team */}
@@ -105,12 +128,7 @@ const Register = () => {
                     name='team'
                     label='Select your team*'
                     placeholder='Select team'
-                    options={[
-                      { label: 'Bangladesh', value: 'Bangladesh' },
-                      { label: 'India', value: 'India' },
-                      { label: 'Pakistan', value: 'Pakistan' },
-                      { label: 'Sri Lanka', value: 'Sri Lanka' },
-                    ]}
+                    options={teams?.map((item) => ({ label: item.name, value: item.name })) || []}
                   />
 
                   {/* Transaction ID */}
@@ -123,7 +141,7 @@ const Register = () => {
 
                 {/* File upload full width */}
                 <div className='flex flex-col gap-2'>
-                  <label className='text-base font-medium'>Upload your picture*</label>
+                  <label className='text-base font-medium'>Upload your image*</label>
 
                   {/* Upload Box */}
                   <label
@@ -136,21 +154,21 @@ const Register = () => {
                     <span className='text-sm text-gray-600 font-medium'>Click to upload</span>
 
                     <p className='text-xs text-gray-500'>
-                      (You must submit a picture wearing the team jersey.)
+                      (You must submit a image wearing the team jersey.)
                     </p>
-                    {methods.watch('picture') && (
+                    {methods.watch('image')?.name && (
                       <p className='text-sm text-green-600 font-medium mt-1'>
-                        Selected: {methods.watch('picture')?.name}
+                        Selected: {methods.watch('image')?.name}
                       </p>
                     )}
                     <input
                       type='file'
                       accept='image/*'
-                      {...methods.register('picture', { required: 'Picture is required' })}
+                      {...methods.register('image', { required: 'image is required' })}
                       className='hidden'
                       onChange={(e: any) => {
-                        methods.setValue('picture', e.target.files?.[0]);
-                        methods.trigger('picture'); // validate immediately
+                        methods.setValue('image', e.target.files?.[0]);
+                        methods.trigger('image'); // validate immediately
                       }}
                     />
                   </label>
@@ -158,9 +176,9 @@ const Register = () => {
                   {/* Show selected file name */}
 
                   {/* Error message */}
-                  {methods.formState.errors.picture && (
+                  {methods.formState.errors.image && (
                     <p className='text-sm text-red-600'>
-                      {methods.formState.errors.picture.message as string}
+                      {methods.formState.errors.image.message as string}
                     </p>
                   )}
                 </div>
@@ -217,6 +235,8 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      <CongratulationRegistration />
     </div>
   );
 };
