@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -7,15 +7,16 @@ import BCCHeaderMobile from './BCCHeaderMobile';
 
 const BCCHeader = () => {
   const pathname = usePathname();
+  const [showTooltip, setShowTooltip] = useState(false); // Track tooltip visibility
 
   const navLinks = [
     { href: '/', label: 'HOME' },
-    { href: '/', label: 'GALLERY' },
+    { href: '', label: 'GALLERY' },
     { href: '/fans-tournament', label: 'FAN’S TOURNAMENT' },
     { type: 'image', src: '/bccImages/logo.jpg', alt: 'Star Icon' },
-    { href: '/', label: 'ABOUT US' },
-    { href: '/', label: 'PLAYER LIST' },
-    { href: '/', label: 'CONTACT US' },
+    { href: '', label: 'ABOUT US' },
+    { href: '', label: 'PLAYER LIST' },
+    { href: '', label: 'CONTACT US' },
   ];
 
   return (
@@ -45,17 +46,33 @@ const BCCHeader = () => {
                     className='object-contain'
                   />
                 ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href || ''}
-                    className={`text-lg font-bold transition ${
-                      pathname === link.href
-                        ? 'text-blue-900'
-                        : 'text-blue-950 hover:text-[#E1E100]'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                  <div key={link.href} className='relative group inline-block'>
+                    <Link
+                      href={link.href || ''}
+                      className={`text-lg font-bold transition ${
+                        pathname === link.href
+                          ? 'text-blue-900'
+                          : 'text-blue-950 hover:text-[#E1E100]'
+                      }`}
+                      onMouseEnter={() => setShowTooltip(true)} // Show tooltip on hover
+                      onMouseLeave={() => setShowTooltip(false)} // Hide tooltip when hover ends
+                    >
+                      {link.label}
+                    </Link>
+
+                    {/* Conditionally render tooltip */}
+                    {showTooltip && link.href === '' && (
+                      <span
+                        className='absolute left-1/2 -translate-x-1/2 -top-8
+                                        whitespace-nowrap
+                                        bg-black text-white text-sm px-2 py-1 rounded
+                                        opacity-0 group-hover:opacity-100
+                                        transition pointer-events-none'
+                      >
+                        Comming soon..
+                      </span>
+                    )}
+                  </div>
                 ),
               )}
             </nav>

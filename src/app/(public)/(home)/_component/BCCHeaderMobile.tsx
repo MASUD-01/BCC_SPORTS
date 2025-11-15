@@ -6,16 +6,17 @@ import { usePathname } from 'next/navigation';
 import { HiMenu, HiX } from 'react-icons/hi';
 
 const BCCHeaderMobile = () => {
+  const [showTooltip, setShowTooltip] = useState(false); // Track tooltip visibility
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { href: '/', label: 'HOME' },
-    { href: '/gallery', label: 'GALLERY' },
+    { href: '', label: 'GALLERY' },
     { href: '/fans-tournament', label: 'FAN’S TOURNAMENT' },
-    { href: '/about-us', label: 'ABOUT US' },
-    { href: '/player-list', label: 'PLAYER LIST' },
-    { href: '/contact-us', label: 'CONTACT US' },
+    { href: '', label: 'ABOUT US' },
+    { href: '', label: 'PLAYER LIST' },
+    { href: '', label: 'CONTACT US' },
   ];
 
   return (
@@ -44,16 +45,33 @@ const BCCHeaderMobile = () => {
       {isOpen && (
         <div className='absolute top-full left-0 w-full backdrop-blur-xl bg-white/80 border-t border-black/10 flex flex-col gap-4 p-4 z-40 rounded-b-lg shadow-lg'>
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className={`text-lg font-bold text-center py-2 transition ${
-                pathname === link.href ? 'text-yellow-500' : 'text-black hover:text-yellow-500'
-              }`}
-            >
-              {link.label}
-            </Link>
+            <>
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={`text-lg font-bold text-center py-2 transition ${
+                  pathname === link.href ? 'text-yellow-500' : 'text-black hover:text-yellow-500'
+                }`}
+                onMouseEnter={() => setShowTooltip(true)} // Show tooltip on hover
+                onMouseLeave={() => setShowTooltip(false)} // Hide tooltip when hover ends
+              >
+                {link.label}
+              </Link>
+
+              {/* Conditionally render tooltip */}
+              {showTooltip && link.href === '' && (
+                <span
+                  className='absolute left-1/2 -translate-x-1/2 -top-8
+                                        whitespace-nowrap
+                                        bg-black text-white text-sm px-2 py-1 rounded
+                                        opacity-0 group-hover:opacity-100
+                                        transition pointer-events-none'
+                >
+                  Comming soon..
+                </span>
+              )}
+            </>
           ))}
         </div>
       )}

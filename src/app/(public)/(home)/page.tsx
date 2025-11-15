@@ -1,3 +1,5 @@
+'use client';
+
 import BCCHeader from '@/app/(public)/(home)/_component/BCCHeader';
 import type { Metadata } from 'next';
 import Image from 'next/image';
@@ -8,40 +10,10 @@ import BCCPhotglarry from './_component/BCCPhotglarry';
 import Banner from './_component/Banner';
 import PowerHouseBCC from './_component/PowerHouseBCC';
 import Link from 'next/link';
-
-export const metadata: Metadata = {
-  title: {
-    default: 'Bangladesh',
-    template: '%s',
-  },
-  description:
-    'SOHI provides premium airport services in Bangladesh, including Meet & Assist, Lounge booking, and Luggage Wrapping at Dhaka Airport.',
-  keywords: [
-    'Dhaka airport services',
-    'meet and greet Dhaka',
-    'airport lounge Dhaka',
-    'luggage wrapping Dhaka',
-  ],
-  openGraph: {
-    title: 'Bangladesh',
-    description:
-      'Premium airport services in Dhaka: Meet & Assist, Lounge booking, and Luggage Wrapping.',
-    url: 'https://sohi.com.bd',
-    siteName: 'SOHI Bangladesh',
-    images: [
-      {
-        url: 'https://sohi.com.bd/og-home.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Bangladesh',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-};
+import { useGetTournamentQuery } from '@/lib/APIs/common-api';
 
 export default function Home() {
+  const { data: touranment } = useGetTournamentQuery();
   return (
     <main className='min-h-screen flex flex-col'>
       {/* 🌟 Hero Section */}
@@ -78,13 +50,26 @@ export default function Home() {
             </p>
 
             <div className='flex flex-wrap justify-center md:justify-start gap-2 md:gap-4'>
-              <Link href='/sing-up' className='w-full'>
-                <button className='px-6 py-3 w-full md:w-fit bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'>
-                  Register Now
-                </button>
-              </Link>
+              {(() => {
+                const endDate = touranment?.[0]?.end_date;
+                const isValidDate = endDate && new Date(endDate) >= new Date();
 
-              <button className='px-6 w-full md:w-fit py-3 border border-white text-white rounded-lg hover:bg-white hover:text-black transition'>
+                return isValidDate ? (
+                  <Link href='/sing-up' className='w-full cursor-pointer'>
+                    <button className='px-6 py-3 cursor-pointer w-full min-w-[187px] md:w-fit bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'>
+                      Register Now
+                    </button>
+                  </Link>
+                ) : (
+                  <Link href='/fans-tournament' className='w-full cursor-pointer'>
+                    <button className='px-6 cursor-pointer py-3 w-full min-w-[187px] md:w-fit bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'>
+                      View Details
+                    </button>
+                  </Link>
+                );
+              })()}
+
+              <button className='px-6 w-full md:w-fit py-3 border cursor-pointer border-white text-white rounded-lg hover:bg-white hover:text-black transition'>
                 Visit Facebook Page
               </button>
             </div>
@@ -110,14 +95,13 @@ export default function Home() {
       {/* 📢 Announce Board */}
       <AnnounceBoard />
 
-      {/* 🏏 Member List */}
-      <BCCMemberList />
-      {/* 🖼 Gallery */}
+      {/* <BCCMemberList />
+
       <BCCBlog />
       <BCCPhotglarry />
       <Banner />
-      {/* ⚡ Powerhouse */}
-      <PowerHouseBCC />
+
+      <PowerHouseBCC /> */}
     </main>
   );
 }
