@@ -1,6 +1,6 @@
 'use client';
 
-import { Plane, Anvil } from 'lucide-react';
+import { Anvil } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function GlobalLoading() {

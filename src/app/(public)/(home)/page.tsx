@@ -64,11 +64,11 @@ export default function Home() {
                 </p>
                 <div className='flex flex-col md:flex-row md:flex-wrap justify-center md:justify-start gap-2 md:gap-4'>
                   {(() => {
-                    const endDate = touranment?.[0]?.end_date;
+                    const endDate = touranment?.[0]?.registration_end;
                     const isValidDate = endDate && new Date(endDate) >= new Date();
 
                     return isValidDate ? (
-                      <Link href='/sing-up' className='w-full md:w-auto'>
+                      <Link href='/sing-up' className='w-full md:w-auto cursor-pointer'>
                         <button className='px-6 py-3 w-full min-w-[187px] bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'>
                           Register Now
                         </button>
@@ -86,16 +86,22 @@ export default function Home() {
                             window.scrollTo({ top: y - offset, behavior: 'smooth' });
                           }
                         }}
-                        className='px-6 py-3 w-full md:w-auto min-w-[187px] bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'
+                        className='px-6 cursor-pointer py-3 w-full md:w-auto min-w-[187px] bg-[#E1E100] text-blue-950 font-semibold rounded-lg hover:bg-yellow-300 transition'
                       >
                         View Details
                       </button>
                     );
                   })()}
 
-                  <button className='px-6 py-3 w-full md:w-auto min-w-[187px] border border-white text-white rounded-lg hover:bg-white hover:text-black transition'>
-                    Visit Facebook Page
-                  </button>
+                  <a
+                    href='https://www.facebook.com/profile.php?id=61580442497092&rdid=Mwt89colY2i2BPE6&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CwBRmv4eF%2F#'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <button className='px-6 cursor-pointer py-3 w-full md:w-auto min-w-[187px] border border-white text-white rounded-lg hover:bg-white hover:text-black transition'>
+                      Visit Facebook Page
+                    </button>
+                  </a>
                 </div>
               </div>
 

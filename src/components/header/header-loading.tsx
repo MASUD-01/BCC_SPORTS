@@ -1,17 +1,11 @@
 'use client';
 
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { getImageLink } from '@/lib/helper';
+import { Popover } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { ChevronDown, LogOut, User } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Button } from '../ui/button';
 import Skeleton from 'react-loading-skeleton';
 
 export default function HeaderLoading() {
