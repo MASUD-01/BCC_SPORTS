@@ -60,21 +60,21 @@ const Footer = () => {
           {/* Social Icons */}
           <div className='flex gap-4 mt-2'>
             <a
-              href='https://www.facebook.com'
+              href='https://www.facebook.com/profile.php?id=61580442497092&rdid=Mwt89colY2i2BPE6&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CwBRmv4eF%2F#'
               target='_blank'
               rel='noreferrer'
               className='hover:text-orange-500 transition'
             >
               <FaFacebookF size={20} />
             </a>
-            <a
-              href='https://www.instagram.com'
+            {/* <a
+              href='https://www.facebook.com/profile.php?id=61580442497092&rdid=Mwt89colY2i2BPE6&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CwBRmv4eF%2F#'
               target='_blank'
               rel='noreferrer'
               className='hover:text-orange-500 transition'
             >
               <FaInstagram size={20} />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
