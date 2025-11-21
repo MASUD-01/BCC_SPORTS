@@ -1,8 +1,4 @@
 import { addDays } from 'date-fns';
-import logo from '../../public/logo/logoair.png';
-import logoWithbg from '../../public/logo/sohiwithbg.png';
-
-export { logo, logoWithbg };
 export const fadeInUp = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
@@ -34,4 +30,3 @@ export const HOTEL_NATIONALITY = 'BD';
 export const HOTEL_DURATION_EXPIRED = 60 * 1000 * 15;
 
 export const TWO_FA_ERROR_MESSAGE = 'Two factor authentication is required for this account';
-export const imgUrl = 'https://m360ict-data.s3.ap-south-1.amazonaws.com/sohi-airport/';

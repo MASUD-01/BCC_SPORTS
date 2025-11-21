@@ -4,9 +4,9 @@ import GlobalLoading from '@/app/loading';
 import { useGetTournamentQuery } from '@/lib/APIs/common-api';
 import Image from 'next/image';
 import Link from 'next/link';
-import FNSTournament from '../fans-tournament/page';
 import AnnounceBoard from './_component/AnnounceBoard';
 import TournamentGallery from './_component/TournamentGallery';
+import FNSTournament from './_component/FNSTournament';
 
 export default function Home() {
   const { data: touranment, isLoading } = useGetTournamentQuery({ is_active: true });
