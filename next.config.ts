@@ -7,14 +7,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'bcc.binaricbyte.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'm360-trabill.s3.ap-south-1.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'm360ict-data.s3.ap-south-1.amazonaws.com',
-      },
+
       {
         protocol: 'https',
         hostname: 'images.grnconnect.com',
