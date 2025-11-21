@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { Calendar, MapPin } from 'lucide-react';
 
 const PlayerPage = () => {
   const [activeTab, setActiveTab] = useState('players'); // active tab state
@@ -40,74 +41,88 @@ export default PlayerPage;
 const MatchFixtures = ({ fixtures }: any) => {
   if (!fixtures) return null;
 
-  const formatDate = (dateString: any) => {
+  const formatFullDate = (dateString: any) => {
     const d = new Date(dateString);
     return d.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
+      month: 'long',
       day: 'numeric',
+      year: 'numeric',
     });
   };
 
   const formatTime = (dateString: any) => {
     const d = new Date(dateString);
     return d.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: 'numeric',
+      minute: 'numeric',
     });
   };
 
   return (
-    <div className='grid grid-cols-1  md:grid-cols-2 gap-6'>
+    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
       {fixtures.map((match: any) => (
         <div
           key={match.id}
-          className='bg-white rounded-xl shadow-md p-5 flex flex-col md:flex-row items-center justify-between gap-5 hover:shadow-lg transition'
+          className='bg-white border rounded-xl shadow-sm p-4 flex flex-col gap-3 justify-between'
         >
-          {/* LEFT SIDE - MATCH TITLE & DATE */}
-          <div className='flex flex-col items-start'>
-            <h3 className='text-xl font-semibold text-gray-900'>{match.title}</h3>
-            <p className='text-gray-600 text-sm mt-1'>
-              {formatDate(match.match_date_time)} • {formatTime(match.match_date_time)}
-            </p>
-            <p className='text-gray-500 text-sm'>{match.venue}</p>
+          {/* Top Row */}
+          <div className='flex items-center justify-between'>
+            <h3 className='text-sm font-semibold text-blue-900'>{match.title}</h3>
+
+            <div className='flex items-center gap-1 text-orange-600 text-xs'>
+              <MapPin className='w-4 h-4' />
+              <span>{match.venue}</span>
+            </div>
           </div>
 
-          {/* CENTER - LOGOS & VS */}
-          <div className='flex items-center gap-4'>
-            {/* Team A */}
-            <div className='flex flex-col items-center'>
-              <div className='relative w-14 h-14'>
-                <Image
-                  src={match.team_a.logo}
-                  alt={match.team_a.name}
-                  fill
-                  className='object-contain rounded'
-                />
-              </div>
-              <span className='text-sm font-semibold mt-1'>{match.team_a.name}</span>
+          {/* Team A Row */}
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-2'>
+              <Image
+                src={match.team_a.logo}
+                alt={match.team_a.name}
+                width={26}
+                height={20}
+                className='rounded'
+              />
+              <span className='text-sm font-semibold'>{match.team_a.name}</span>
             </div>
 
-            <span className='text-lg font-bold text-gray-800'>VS</span>
+            <span className='text-gray-900 font-semibold'>{match.team_a_score}</span>
+          </div>
 
-            {/* Team B */}
-            <div className='flex flex-col items-center'>
-              <div className='relative w-14 h-14'>
-                <Image
-                  src={match.team_b.logo}
-                  alt={match.team_b.name}
-                  fill
-                  className='object-contain rounded'
-                />
-              </div>
-              <span className='text-sm font-semibold mt-1'>{match.team_b.name}</span>
+          {/* Team B Row */}
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-2'>
+              <Image
+                src={match.team_b.logo}
+                alt={match.team_b.name}
+                width={26}
+                height={20}
+                className='rounded'
+              />
+              <span className='text-sm font-semibold'>{match.team_b.name}</span>
             </div>
+
+            <span className='text-gray-900 font-semibold'>{match.team_b_score}</span>
+          </div>
+
+          {/* Result */}
+          <p className='text-green-600 text-sm font-semibold'>{match?.result}</p>
+
+          {/* Date Row */}
+          <div className='flex items-center gap-2 text-gray-600 text-sm pt-2 border-t'>
+            <Calendar className='w-4 h-4 text-orange-600' />
+            <span>
+              {formatFullDate(match.match_date_time)} – {formatTime(match.match_date_time)}
+            </span>
           </div>
         </div>
       ))}
     </div>
   );
 };
+
 // --------------------- Tabs ---------------------
 interface PlayerTabsProps {
   activeTab: string;
@@ -278,7 +293,7 @@ export const CheckStatus = () => {
   if (isLoadingPlayers || isLoadingTournaments)
     return <p className='text-center text-gray-500 py-10'>Loading...</p>;
 
-  if (isError) return <p className='text-center text-red-600 py-10'>Failed to load data.</p>;
+  if (isError) return <p className='text-center text-red-600 py-10'>Failed to load data?.</p>;
 
   return (
     <div className='w-full overflow-x-auto shadow-md rounded-lg p-4'>
@@ -425,7 +440,9 @@ const TeamList = ({ teams, isActiveTournamentId }: any) => {
               <DialogTitle>Match Fixture</DialogTitle>
             </DialogHeader>
             <Separator />
-            {selectedTeam && <TeamMatchFixtures teamId={1} tournamentId={1} />}
+            {selectedTeam && (
+              <TeamMatchFixtures teamId={selectedTeam} tournamentId={tournamentId} />
+            )}
           </DialogContent>
         </Dialog>
       )}
@@ -485,7 +502,7 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
         .unwrap()
         .then((res: any) => {
           if (res && res.length > 0) {
-            setTeamInfo(res[0]?.team); // Assuming all players have same team info
+            setTeamInfo(res[0]?.team);
           }
         });
     }
@@ -493,12 +510,12 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
 
   if (isLoading) return <p className='text-center py-5 text-gray-500'>Loading...</p>;
   if (isError) return <p className='text-center py-5 text-red-600'>Failed to load team players.</p>;
-  if (!data || data.length === 0)
+  if (!data || data?.length === 0)
     return <p className='text-center py-5 text-gray-500'>No data available.</p>;
 
   return (
     <div className='w-full mt-4'>
-      {/* Team Info & Total Players */}
+      {/* Team Info */}
       <div className='flex items-center justify-between mb-4'>
         <div className='flex items-center gap-3'>
           {teamInfo?.logo && (
@@ -511,29 +528,28 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
           <h2 className='text-xl font-semibold text-gray-900'>{teamInfo?.name}</h2>
         </div>
         <div className='text-gray-700 font-medium'>
-          Total Players: <span className='font-semibold'>{data.length}</span>
+          Total Players: <span className='font-semibold'>{data?.length}</span>
         </div>
       </div>
 
-      {/* Player Table */}
-      <div className='shadow-md rounded-lg'>
+      {/* Desktop TABLE */}
+      <div className='hidden sm:block shadow-md rounded-lg'>
         <table className='min-w-full divide-y divide-gray-200'>
           <thead className='bg-gray-50'>
             <tr>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>SL</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>Photo</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-blue-950'>Name</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-700'>Number</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-orange-500'>Role</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-yellow-500'>Status</th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-indigo-600'>Team</th>
+              <th className='px-4 py-3 text-sm font-medium text-gray-900'>SL</th>
+              <th className='px-4 py-3 text-sm font-medium text-gray-900'>Photo</th>
+              <th className='px-4 py-3 text-sm font-medium text-blue-950'>Name</th>
+              <th className='px-4 py-3 text-sm font-medium text-gray-700'>Number</th>
+              <th className='px-4 py-3 text-sm font-medium text-orange-500'>Role</th>
+              <th className='px-4 py-3 text-sm font-medium text-yellow-500'>Status</th>
             </tr>
           </thead>
 
           <tbody className='bg-white divide-y divide-gray-200'>
-            {data.map((player: any, index: number) => (
+            {data?.map((player: any, index: number) => (
               <tr key={player?.id} className='hover:bg-gray-50 transition'>
-                <td className='px-4 py-2 font-semibold text-gray-900'>{index + 1}</td>
+                <td className='px-4 py-2'>{index + 1}</td>
                 <td className='px-4 py-2'>
                   {player?.image ? (
                     <img
@@ -545,7 +561,7 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
                     '—'
                   )}
                 </td>
-                <td className='px-4 py-2 text-blue-950 font-semibold'>{player?.name}</td>
+                <td className='px-4 py-2 font-semibold text-blue-950'>{player?.name}</td>
                 <td className='px-4 py-2 text-gray-700'>{player?.phone}</td>
                 <td className='px-4 py-2 text-orange-500'>{player?.role?.name}</td>
                 <td className='px-4 py-2 font-semibold'>
@@ -561,37 +577,68 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
                     {player?.status}
                   </span>
                 </td>
-                <td className='px-4 py-2 text-indigo-600 flex items-center gap-2'>
-                  {player?.team?.logo && (
-                    <img
-                      src={player?.team?.logo}
-                      alt={player?.team?.name}
-                      className='w-8 h-8 object-cover rounded-full'
-                    />
-                  )}
-                  {player?.team?.name}
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* MOBILE CARD DESIGN */}
+      <div className='sm:hidden flex flex-col gap-4 mt-3'>
+        {data?.map((player: any, index: number) => (
+          <div
+            key={player?.id}
+            className='p-4 bg-white shadow-md rounded-lg flex gap-4 items-center'
+          >
+            {/* Player Photo */}
+            <div>
+              {player?.image ? (
+                <img
+                  src={player?.image}
+                  className='w-14 h-14 rounded-full object-cover'
+                  alt={player?.name}
+                />
+              ) : (
+                <div className='w-14 h-14 rounded-full bg-gray-200' />
+              )}
+            </div>
+
+            {/* Player Info */}
+            <div className='flex-1'>
+              <h3 className='font-semibold text-blue-950 text-lg'>{player?.name}</h3>
+
+              <p className='text-sm text-gray-600'>Number: {player?.phone}</p>
+              <p className='text-sm text-orange-500'>Role: {player?.role?.name}</p>
+
+              <span
+                className={`px-3 py-1 mt-2 inline-block rounded-full text-xs font-medium capitalize ${
+                  player?.status === 'pending'
+                    ? 'bg-yellow-100 text-yellow-700'
+                    : player?.status === 'approved'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {player?.status}
+              </span>
+            </div>
+
+            {/* SL Number */}
+            <div className='text-gray-400 font-bold text-sm'>#{index + 1}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-interface TeamMatchFixturesProps {
-  teamId: number;
-  tournamentId: number;
-}
-
-export const TeamMatchFixtures = ({ teamId, tournamentId }: TeamMatchFixturesProps) => {
-  const [fixtures, setFixtures] = useState<any[] | null>(null); // ← set initial null
+export const TeamMatchFixtures = ({ teamId, tournamentId }: any) => {
+  const [fixtures, setFixtures] = useState<any[] | null>(null);
   const [fetchFixtures, { isLoading, isError }] = useLazyMatchFixturesQuery();
 
   useEffect(() => {
     if (teamId && tournamentId) {
-      setFixtures(null); // reset to null when fetching new data
+      setFixtures(null);
       fetchFixtures({ team: teamId, tournament: tournamentId })
         .unwrap()
         .then((res: any) => setFixtures(res))
@@ -599,21 +646,6 @@ export const TeamMatchFixtures = ({ teamId, tournamentId }: TeamMatchFixturesPro
     }
   }, [teamId, tournamentId, fetchFixtures]);
 
-  const formatDate = (dateString: string) => {
-    const d = new Date(dateString);
-    return d.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const d = new Date(dateString);
-    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  };
-
-  // ✅ Correct rendering logic
   if (isLoading || fixtures === null) {
     return <p className='text-center py-5 text-gray-500'>Loading fixtures...</p>;
   }
@@ -627,48 +659,80 @@ export const TeamMatchFixtures = ({ teamId, tournamentId }: TeamMatchFixturesPro
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
-      {fixtures.map((match: any) => (
+    <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
+      {fixtures.map((match) => (
         <div
           key={match.id}
-          className='bg-white rounded-xl shadow-md p-4 flex flex-col md:flex-row items-center justify-between gap-4 hover:shadow-lg transition'
+          className='bg-white border rounded-xl shadow-sm p-4 flex flex-col gap-4 justify-between'
         >
-          {/* Left: Match Info */}
-          <div className='flex flex-col items-start'>
-            <h3 className='text-lg font-semibold text-gray-900'>{match.title}</h3>
-            <p className='text-gray-600 text-sm'>
-              {formatDate(match.match_date_time)} • {formatTime(match.match_date_time)}
-            </p>
-            <p className='text-gray-500 text-sm'>{match.venue}</p>
+          {/* Top Title + Venue */}
+          <div className='flex items-center justify-between'>
+            <h3 className='text-sm font-semibold text-blue-900'>{match.title}</h3>
+
+            <div className='flex items-center gap-1 text-xs'>
+              <MapPin className='w-4 h-4 text-orange-600' />
+              <span className='text-orange-600'>{match.venue}</span>
+            </div>
           </div>
 
-          {/* Right: Teams */}
-          <div className='flex items-center gap-4'>
-            <div className='flex flex-col items-center'>
-              <div className='relative w-12 h-12'>
-                <Image
-                  src={match.team_a.logo}
-                  alt={match.team_a.name}
-                  fill
-                  className='object-contain rounded'
-                />
+          {/* Teams Row */}
+
+          <div className='flex items-center justify-between'>
+            {/* Left Team */}
+            <div className='flex items-center gap-2'>
+              <Image
+                src={match.team_a.logo}
+                alt={match.team_a.name}
+                width={28}
+                height={20}
+                className='rounded'
+              />
+              <div className='flex flex-col'>
+                <span className='text-[15px] font-semibold'>{match.team_a.name}</span>
               </div>
-              <span className='text-sm font-semibold mt-1'>{match.team_a.name}</span>
             </div>
 
-            <span className='text-lg font-bold text-gray-800'>VS</span>
+            {/* Score */}
+            <span className='text-gray-900 font-semibold'>{match.team_a_score}</span>
+          </div>
 
-            <div className='flex flex-col items-center'>
-              <div className='relative w-12 h-12'>
-                <Image
-                  src={match.team_b.logo}
-                  alt={match.team_b.name}
-                  fill
-                  className='object-contain rounded'
-                />
+          <div className='flex items-center justify-between'>
+            {/* Right Team */}
+            <div className='flex items-center gap-2'>
+              <Image
+                src={match.team_b.logo}
+                alt={match.team_b.name}
+                width={28}
+                height={20}
+                className='rounded'
+              />
+              <div className='flex flex-col'>
+                <span className='text-[15px] font-semibold'>{match.team_b.name}</span>
               </div>
-              <span className='text-sm font-semibold mt-1'>{match.team_b.name}</span>
             </div>
+
+            {/* Score */}
+            <span className='text-gray-900 font-semibold'>{match.team_b_score}</span>
+          </div>
+
+          {/* Result */}
+          <p className='text-green-600 text-sm font-semibold'>{match.result}</p>
+
+          {/* Date Row */}
+          <div className='flex items-center gap-2 text-gray-600 text-sm pt-2 border-t'>
+            <span className='text-orange-500 text-lg'>📅</span>
+            <span>
+              {new Date(match.match_date_time).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}{' '}
+              -{' '}
+              {new Date(match.match_date_time).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+              })}
+            </span>
           </div>
         </div>
       ))}
