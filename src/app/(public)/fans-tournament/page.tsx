@@ -6,7 +6,7 @@ import PlayerPage from '../(home)/_component/PlayerPage';
 import { useGetTeamsQuery, useGetTournamentQuery } from '@/lib/APIs/common-api';
 
 const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
-  const { data: touranment } = useGetTournamentQuery();
+  const { data: touranment } = useGetTournamentQuery({ is_active: true });
   const { data: teams } = useGetTeamsQuery();
 
   const startDate = touranment?.[0]?.start_date;
@@ -54,10 +54,10 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
           </div>
 
           {/* 🔥 Cards Container (Increased gap for 4-column layout) */}
-          <div className='flex flex-wrap md:flex-row justify-center items-center gap-5 md:gap-4 w-full'>
+          {/* 🔥 Cards Container (Responsive 4-column grid) */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full'>
             {/* --- Venue Card --- */}
-            {/* 🔥 REMOVED max-w-xs. It is no longer needed since lg:w-1/4 is used. */}
-            <div className='w-full sm:w-5/12 lg:w-1/4 px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-3'>
+            <div className='px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-2'>
               <div className='w-10 h-10 relative overflow-hidden'>
                 <Image alt='1' height={30} width={30} src={'/bccImages/Frame.svg'} />
               </div>
@@ -72,7 +72,7 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
             </div>
 
             {/* --- Date Range --- */}
-            <div className='w-full sm:w-5/12 lg:w-1/4 px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-3'>
+            <div className='px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-2'>
               <div className='w-10 h-10 relative overflow-hidden'>
                 <Image alt='1' height={30} width={30} src={'/bccImages/Frame (1).svg'} />
               </div>
@@ -88,7 +88,7 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
             </div>
 
             {/* --- Teams Card --- */}
-            <div className='w-full sm:w-5/12 lg:w-1/4 px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-3'>
+            <div className='px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-2'>
               <div className='w-10 h-10 relative overflow-hidden'>
                 <Image alt='1' height={30} width={30} src={'/bccImages/Frame (2).svg'} />
               </div>
@@ -101,7 +101,9 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
                 </div>
               </div>
             </div>
-            <div className='w-full sm:w-5/12 lg:w-1/4 px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-3'>
+
+            {/* --- Running Champion --- */}
+            <div className='px-4 py-3 bg-white/10 rounded-lg flex flex-col justify-start items-center gap-2'>
               <div className='w-10 h-10 relative overflow-hidden'>
                 <Image
                   alt='1'
@@ -114,10 +116,9 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
                 <div className="text-center text-white text-base font-light font-['Onest']">
                   Running Champion
                 </div>
-              </div>
-
-              <div className="text-center text-yellow-400 text-lg font-normal font-['Onest']">
-                {(touranment && touranment[0]?.last_champion?.name) || 'Last Champion'}
+                <div className="text-center text-yellow-400 text-lg font-normal font-['Onest']">
+                  {(touranment && touranment[0]?.last_champion?.name) || 'Last Champion'}
+                </div>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-const tagKeys = ['ORDER-LIST', 'SUPPORT', 'PROFILE_UPDATE'] as const;
+const tagKeys = ['ORDER-LIST', 'SUPPORT', 'PROFILE_UPDATE', 'BCC'] as const;
 
 export const TagTypes = Object.fromEntries(tagKeys.map((key) => [key, key])) as {
   [K in (typeof tagKeys)[number]]: K;

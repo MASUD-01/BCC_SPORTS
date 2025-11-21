@@ -46,6 +46,7 @@ export const CommonAPI = baseApi.injectEndpoints({
         url: '/roles',
         method: 'GET',
       }),
+      providesTags: ['BCC'],
     }),
     getPlayer: builder.query<
       {
@@ -74,6 +75,39 @@ export const CommonAPI = baseApi.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: ['BCC'],
+    }),
+    teamWisePlayerList: builder.query<
+      {
+        id: number;
+        role: {
+          id: number;
+          name: string;
+          category: string;
+        };
+        team: {
+          id: number;
+          name: string;
+          logo: string;
+        };
+        name: string;
+        phone: string;
+        image: string;
+        bkash_transaction_id: string;
+        status: string;
+        tournament: number;
+      }[],
+      {
+        team?: number;
+        tournament?: number;
+      }
+    >({
+      query: (params) => ({
+        url: '/players/',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['BCC'],
     }),
     getPlayerCheck: builder.query<
       {
@@ -102,6 +136,7 @@ export const CommonAPI = baseApi.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: ['BCC'],
     }),
     getTeams: builder.query<
       {
@@ -115,13 +150,38 @@ export const CommonAPI = baseApi.injectEndpoints({
         url: '/teams',
         method: 'GET',
       }),
+      providesTags: ['BCC'],
     }),
-    matchFixtures: builder.query<TournamentMatchList[], void>({
-      query: () => ({
+    matchFixtures: builder.query<
+      TournamentMatchList[],
+      {
+        team?: number;
+        tournament?: number;
+      }
+    >({
+      query: (params) => ({
         url: '/match-fixtures/',
         method: 'GET',
+        params,
       }),
+      providesTags: ['BCC'],
     }),
+    getHeroSection: builder.query<
+      {
+        id: number;
+        title: string;
+        subtitle: string;
+        background_image: string;
+      }[],
+      void
+    >({
+      query: () => ({
+        url: '/hero-sections/',
+        method: 'GET',
+      }),
+      providesTags: ['BCC'],
+    }),
+
     getTournament: builder.query<
       {
         id: number;
@@ -149,12 +209,16 @@ export const CommonAPI = baseApi.injectEndpoints({
         created_at: string;
         updated_at: string;
       }[],
-      void
+      {
+        is_active?: boolean;
+      }
     >({
-      query: () => ({
+      query: (params) => ({
         url: '/tournaments',
         method: 'GET',
+        params,
       }),
+      providesTags: ['BCC'],
     }),
     createRegistration: builder.mutation<
       {
@@ -177,7 +241,7 @@ export const CommonAPI = baseApi.injectEndpoints({
           body: body,
         };
       },
-      invalidatesTags: [],
+      invalidatesTags: ['BCC'],
     }),
   }),
 });
@@ -191,4 +255,7 @@ export const {
   useGetPlayerQuery,
   useLazyGetPlayerCheckQuery,
   useMatchFixturesQuery,
+  useLazyMatchFixturesQuery,
+  useLazyTeamWisePlayerListQuery,
+  useGetHeroSectionQuery,
 } = CommonAPI;

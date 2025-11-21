@@ -82,7 +82,7 @@ const Footer = () => {
       {/* BOTTOM COPYRIGHT SECTION */}
       <div className='container mx-auto mt-10 pt-6 border-t border-white/30 text-center'>
         <p className='text-sm md:text-base font-medium'>
-          2024 All Rights Reserved by BCC / Borogangdia Cricket Club
+          2025 All Rights Reserved by BCC / Borogangdia Cricket Club
         </p>
       </div>
     </footer>

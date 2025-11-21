@@ -12,20 +12,12 @@ interface TournamentRuleGroup {
 
 interface Props {
   tournament_rules: TournamentRuleGroup[];
+  id: string;
 }
 
-const AnnounceBoard = ({ tournament_rules }: Props) => {
-  const ruleGroup = tournament_rules?.[0];
-  const title = ruleGroup?.title;
-  const rules = ruleGroup?.rules || [];
-
-  // Split rules into two equal columns
-  const mid = Math.ceil(rules.length / 2);
-  const leftRules = rules.slice(0, mid);
-  const rightRules = rules.slice(mid);
-
+const AnnounceBoard = ({ tournament_rules, id }: Props) => {
   return (
-    <section className='py-16 relative text-center bg-cover bg-center px-4 sm:px-6 lg:px-0'>
+    <section id={id} className='py-16 relative text-center bg-cover bg-center px-4 sm:px-6 lg:px-0'>
       {/* Background Image */}
       <div
         className='absolute inset-0 bg-cover bg-center -z-10'
@@ -41,31 +33,34 @@ const AnnounceBoard = ({ tournament_rules }: Props) => {
         <Image width={40} height={30} src='/bccImages/announce.png' alt='icon' />
       </h2>
 
-      <p className='text-3xl sm:text-3xl md:text-4xl font-bebas font-bold text-orange-500 mt-2'>
+      <p className='text-3xl md:text-4xl font-bebas font-bold text-orange-500 mt-2'>
         Rules of BCC Fan’s Tournament - 2025
       </p>
 
-      {/* Rules */}
+      {/* RULE GROUPS */}
       <div className='mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:max-w-5xl mx-auto text-left'>
-        {/* Left Column */}
-        <div className='space-y-3 sm:space-y-4 text-base sm:text-lg leading-6 sm:leading-7 md:border-r md:border-gray-500 md:pr-5'>
-          <p>{title}</p>
-          <ol className='list-decimal list-inside space-y-1 sm:space-y-2'>
-            {leftRules.map((item, index) => (
-              <li key={index}>{item.rule}</li>
-            ))}
-          </ol>
-        </div>
+        {tournament_rules?.map((group, index) => (
+          <div
+            key={index}
+            className={`
+              space-y-3 sm:space-y-4 text-base sm:text-lg leading-6 sm:leading-7
+              ${index % 2 === 0 ? 'md:border-r md:border-gray-500 md:pr-5' : 'md:pl-5'}
+            `}
+          >
+            {/* Group Title */}
+            <p className='font-semibold'>{group.title}</p>
 
-        {/* Right Column */}
-        <div className='space-y-3 sm:space-y-4 text-base sm:text-lg leading-6 sm:leading-7 md:pl-5'>
-          <p className='md:opacity-0'>{title}</p>
-          <ol className='list-decimal list-inside space-y-1 sm:space-y-2'>
-            {rightRules.map((item, index) => (
-              <li key={index}>{item.rule}</li>
-            ))}
-          </ol>
-        </div>
+            {/* Rules – showing SL exactly as provided */}
+            <div className='space-y-2'>
+              {group.rules?.map((item, i) => (
+                <p key={i} className='flex gap-2'>
+                  {/* No auto-numbering. Full text shown. */}
+                  {item.rule}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

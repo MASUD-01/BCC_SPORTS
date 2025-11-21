@@ -1,6 +1,6 @@
 'use client';
 
-import { Plane } from 'lucide-react';
+import { Plane, Anvil } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function GlobalLoading() {
@@ -78,7 +78,7 @@ export default function GlobalLoading() {
               ease: 'easeInOut',
             }}
           >
-            <Plane size={24} strokeWidth={1.5} absoluteStrokeWidth className='text-background' />
+            <Anvil size={24} strokeWidth={1.5} absoluteStrokeWidth className='text-background' />
           </motion.div>
         </motion.div>
 

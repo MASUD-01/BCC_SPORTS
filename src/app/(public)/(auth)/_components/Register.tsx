@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 const registerSchema = z.object({
   name: z.string().nonempty({ message: 'Name is required' }),
-  role: z.string().nonempty({ message: 'Role is required' }),
+  role_id: z.string().nonempty({ message: 'Role is required' }),
   phone: z
     .string()
     .min(11, { message: 'Phone number must be at least 11 digits' })
@@ -25,7 +25,7 @@ const registerSchema = z.object({
     .regex(/^[0-9]{11}$/, { message: 'Phone number must be digits only' }),
 
   tournament: z.string().nonempty({ message: 'tournament is required' }),
-  team: z.string().nonempty({ message: 'Team is required' }),
+  team_id: z.string().nonempty({ message: 'Team is required' }),
   bkash_transaction_id: z.string().nonempty({ message: 'Transaction ID is required' }),
   image: z.instanceof(File, { message: 'image is required' }),
 });
@@ -38,7 +38,7 @@ const Register = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { data } = useGetRolesQuery();
 
-  const { data: touranment } = useGetTournamentQuery();
+  const { data: touranment } = useGetTournamentQuery({ is_active: true });
   const { data: teams } = useGetTeamsQuery();
   const [createRegistration, { isLoading, isSuccess, error, isError }] =
     useCreateRegistrationMutation();
@@ -46,10 +46,10 @@ const Register = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: '',
-      role: '',
+      role_id: '',
       phone: '',
       tournament: '',
-      team: '',
+      team_id: '',
       bkash_transaction_id: '',
       image: undefined,
     },
@@ -59,10 +59,10 @@ const Register = () => {
 
     const formData = new FormData();
     formData.append('name', data.name);
-    formData.append('role', data.role);
+    formData.append('role_id', data.role_id);
     formData.append('phone', data.phone);
     formData.append('tournament', data.tournament);
-    formData.append('team', data.team);
+    formData.append('team_id ', data.team_id);
     formData.append('bkash_transaction_id', data.bkash_transaction_id);
 
     if (data.image) {
@@ -136,7 +136,7 @@ const Register = () => {
 
                     {/* Role */}
                     <FormSelectInput<IRegisterSchema>
-                      name='role'
+                      name='role_id'
                       label='Select your role*'
                       placeholder='Select role'
                       options={
@@ -163,7 +163,7 @@ const Register = () => {
 
                     {/* Team */}
                     <FormSelectInput<IRegisterSchema>
-                      name='team'
+                      name='team_id'
                       label='Select your team*'
                       placeholder='Select team'
                       options={
