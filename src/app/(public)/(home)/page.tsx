@@ -26,7 +26,7 @@ export default function Home() {
             style={{ backgroundImage: "url('/bccImages/bg.jpg')" }}
             className='relative w-full bg-cover bg-center h-[800px]'
           >
-            <div className='flex justify-center items-center mt-5'>
+            {/* <div className='flex justify-center items-center mt-5'>
               <Image
                 src={'/bccImages/logo.jpg'}
                 alt={'logo'}
@@ -34,7 +34,7 @@ export default function Home() {
                 height={30}
                 className='object-contain'
               />
-            </div>
+            </div> */}
             {/* <div className='relative z-20'>
           <BCCHeader />
         </div> */}

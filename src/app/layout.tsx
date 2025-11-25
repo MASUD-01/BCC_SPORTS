@@ -13,29 +13,32 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    default: ' Bangladesh',
-    template: '%s | ',
+    default: 'BCC',
+    template: '%s | BCC Fans',
   },
   description:
-    'SOHI provides premium airport services in Bangladesh, including Meet & Assist, Lounge booking, and Luggage Wrapping at Dhaka Airport.',
+    'BCC Fans is your sports hub for cricket updates, tournament schedules, team details, match results, and live scores. Stay connected with your favourite teams and players.',
   keywords: [
-    'Dhaka airport services',
-    'meet and greet Dhaka',
-    'airport lounge Dhaka',
-    'luggage wrapping Dhaka',
+    'BCC Fans',
+    'BCC cricket fans',
+    'cricket tournaments',
+    'live cricket scores',
+    'sports news BCC',
+    'team rankings',
+    'match highlights',
   ],
   openGraph: {
-    title: ' Bangladesh',
+    title: 'BCC Fans – Sports News, Live Scores & Tournament Updates',
     description:
-      'Premium airport services in Dhaka: Meet & Assist, Lounge booking, and Luggage Wrapping.',
-    url: 'https://sohi.com.bd',
-    siteName: '',
+      'Join BCC Fans for the latest cricket updates, tournament fixtures, scores, news, and player stats. Stay updated with your favourite sports community.',
+    url: 'https://bccfans.com',
+    siteName: 'BCC Fans',
     images: [
       {
-        url: 'https://sohi.com.bd/logoair.png',
+        url: 'https://bccfans.com/og-image.png',
         width: 1200,
         height: 630,
-        alt: ' Bangladesh',
+        alt: 'BCC Fans – Sports & Cricket Updates',
       },
     ],
     locale: 'en_US',

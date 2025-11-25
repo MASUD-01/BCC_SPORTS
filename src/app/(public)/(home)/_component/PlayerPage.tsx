@@ -189,7 +189,7 @@ const PlayerList = () => {
         </thead>
         <tbody className='bg-white divide-y divide-gray-200'>
           {data?.map((player: any, index: number) => (
-            <tr key={player?.id} className='hover:bg-gray-50 transition'>
+            <tr key={player?.id} className='hover:bg-gray-50 transition p-2'>
               <td className='px-4 py-2 font-semibold text-gray-900'>{index + 1}</td>
               <td className='px-4 py-2'>
                 {player?.image ? (

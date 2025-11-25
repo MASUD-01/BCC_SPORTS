@@ -25,7 +25,7 @@ const FNSTournament = ({ showHeader = false }: { showHeader?: boolean }) => {
   const formattedEnd = formatDate(endDate);
   return (
     <div className='my-10'>
-      {!showHeader && <BCCHeader />}
+      {/* {!showHeader && <BCCHeader />} */}
 
       {/* 🔥 Fixed Background Wrapper */}
       <div
