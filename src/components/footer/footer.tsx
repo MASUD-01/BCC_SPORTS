@@ -48,7 +48,7 @@ const Footer = () => {
             {/* Email */}
             <div className='flex items-center gap-2'>
               <HiOutlineMail size={20} />
-              <span className='text-lg'>bcc@gmail.com</span>
+              <span className='text-lg'>mail@bcc.com.bd</span>
             </div>
 
             {/* Location */}
