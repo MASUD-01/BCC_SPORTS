@@ -498,6 +498,7 @@ const TeamPlayerList = ({ teamId, tournamentId }: any) => {
       fetchTeamPlayers({
         team: teamId,
         tournament: tournamentId,
+        status: 'approved',
       })
         .unwrap()
         .then((res: any) => {

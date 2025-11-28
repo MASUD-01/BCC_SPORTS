@@ -100,10 +100,11 @@ export const CommonAPI = baseApi.injectEndpoints({
       {
         team?: number;
         tournament?: number;
+        status?: string;
       }
     >({
       query: (params) => ({
-        url: '/players/',
+        url: '/players',
         method: 'GET',
         params,
       }),
